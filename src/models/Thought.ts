@@ -5,7 +5,7 @@ import { Schema, Document, ObjectId, Types, model } from 'mongoose';
 // Main Schema
 interface IThought extends Document {
   thoughtId: ObjectId;
-  responseBody: string;
+  thoughtText: string;
   username: string;
   createdAt: Date;
   react: IReaction[];
@@ -22,7 +22,7 @@ const reactionSchema = new Schema<IReaction>(
   {
     reactionId: {
       type: Schema.Types.ObjectId,
-      default: () => Types.ObjectId(),
+      default: () => new Types.ObjectId(),
     },
     reactionBody: {
       type: String,
@@ -37,9 +37,10 @@ const reactionSchema = new Schema<IReaction>(
       type: Date,
       default: Date.now,
     },
-    id: false,
   },
-  
+  {
+    id: false,
+  }
 )
 // Main Schema
 const thoughtSchema = new Schema<IThought>(
@@ -74,7 +75,7 @@ const thoughtSchema = new Schema<IThought>(
 
 const Thought = model('Thought', thoughtSchema);
 
-Thought.Create({ name: 'Reaction', react: reactionSchema})
+Thought.create({ name: 'Reaction', react: reactionSchema })
 
 // TODO: Create a virtual called reactionCount that retrieves the length of the thought's reactions array field  on query.
 thoughtSchema
@@ -84,4 +85,4 @@ thoughtSchema
   })
 
 
-export default thoughtSchema;
+export default Thought;
