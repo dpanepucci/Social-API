@@ -30,11 +30,19 @@ const thoughtSchema = new Schema<IThought>(
   {
     toJSON: {
       getters: true,
+      virtuals: true,
     },
     id: false,
   }
 );
-
 // TODO: Create a virtual called reactionCount that retrieves the length of the thought's reactions array field  on query.
+thoughtSchema
+  .virtual('reactionCount')
+  .get(function(this:any) {
+    return `${this.reactions}`.length;
+  })
+
 
 export default thoughtSchema;
+
+//TODO: Create the SubDoc 'Reaction' schema on the Thought model.
