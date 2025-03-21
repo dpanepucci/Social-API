@@ -1,12 +1,47 @@
-import { Schema, Document, ObjectId, Types } from 'mongoose';
+import { Schema, Document, ObjectId, Types, model } from 'mongoose';
 
+//TODO: Create the SubDoc 'Reaction' schema on the Thought model
+
+// Main Schema
 interface IThought extends Document {
   thoughtId: ObjectId;
   responseBody: string;
   username: string;
   createdAt: Date;
+  react: IReaction[];
 }
-
+// SubDoc
+interface IReaction extends Document {
+  reactionId: ObjectId;
+  reactionBody: string;
+  username: string;
+  createdAt: Date;
+}
+// SubDoc
+const reactionSchema = new Schema<IReaction>(
+  {
+    reactionId: {
+      type: Schema.Types.ObjectId,
+      default: () => Types.ObjectId(),
+    },
+    reactionBody: {
+      type: String,
+      required: true,
+      maxLength: 280,
+    },
+    username: {
+      type: String,
+      required: true,
+    },
+    createdAt: {
+      type: Date,
+      default: Date.now,
+    },
+    id: false,
+  },
+  
+)
+// Main Schema
 const thoughtSchema = new Schema<IThought>(
   {
     thoughtId: {
@@ -26,6 +61,7 @@ const thoughtSchema = new Schema<IThought>(
       type: String,
       required: true,
     },
+    react: [reactionSchema]
   },
   {
     toJSON: {
@@ -35,6 +71,11 @@ const thoughtSchema = new Schema<IThought>(
     id: false,
   }
 );
+
+const Thought = model('Thought', thoughtSchema);
+
+Thought.Create({ name: 'Reaction', react: reactionSchema})
+
 // TODO: Create a virtual called reactionCount that retrieves the length of the thought's reactions array field  on query.
 thoughtSchema
   .virtual('reactionCount')
@@ -44,5 +85,3 @@ thoughtSchema
 
 
 export default thoughtSchema;
-
-//TODO: Create the SubDoc 'Reaction' schema on the Thought model.
