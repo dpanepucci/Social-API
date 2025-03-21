@@ -1,30 +1,30 @@
 import { Schema, Document, ObjectId, Types } from 'mongoose';
 
-interface IResponse extends Document {
-  reactionId: ObjectId;
+interface IThought extends Document {
+  thoughtId: ObjectId;
   responseBody: string;
   username: string;
   createdAt: Date;
 }
 
-const responseSchema = new Schema<IResponse>(
+const thoughtSchema = new Schema<IThought>(
   {
-    reactionId: {
+    thoughtId: {
       type: Schema.Types.ObjectId,
       default: () => new Types.ObjectId(),
     },
-    responseBody: {
+    thoughtText: {
       type: String,
       required: true,
       maxlength: 280,
     },
-    username: {
-      type: String,
-      required: true,
-    },
     createdAt: {
       type: Date,
       default: Date.now,
+    },
+    username: {
+      type: String,
+      required: true,
     },
   },
   {
@@ -35,4 +35,6 @@ const responseSchema = new Schema<IResponse>(
   }
 );
 
-export default responseSchema;
+// TODO: Create a virtual called reactionCount that retrieves the length of the thought's reactions array field  on query.
+
+export default thoughtSchema;
