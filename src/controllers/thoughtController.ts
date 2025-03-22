@@ -76,7 +76,36 @@ const addReaction = async (req: AddReactionRequest, res: Response): Promise<void
   }
 };
 
+interface UpdateThoughtRequest extends Request {
+  params: {
+    thoughtId: string;
+  };
+  body: {
+    text?: string; 
+    username?: string;
+  };
+}
+
+// Update a Thought
+const updateThought = async (req: UpdateThoughtRequest, res: Response): Promise<void> => {
+  try {
+    const updatedThought = await Thought.findByIdAndUpdate(
+      req.params.thoughtId,
+      req.body, 
+      { new: true, runValidators: true } 
+    );
+
+    if (!updatedThought) {
+      return res.status(404).json({ message: 'Thought not found' });
+    }
+
+    res.json({ message: 'Thought updated successfully!', updatedThought });
+  } catch (err: any) {
+    res.status(500).json({ error: err.message });
+  }
+};
+
 // exporting all thought controllers
-const thoughtController = { getThoughts, getThoughtById, createThought, addReaction };
+const thoughtController = { getThoughts, getThoughtById, createThought, addReaction, updateThought };
 export default thoughtController;
 

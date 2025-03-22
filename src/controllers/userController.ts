@@ -56,6 +56,25 @@ import { Request, Response } from 'express';
     }
   };
 
+  // Update a user's information
+  export const updateUser = async (req: Request, res: Response) => {
+    try {
+      const user = await User.findByIdAndUpdate(
+        req.params.userId,
+        req.body, // The updated data from the request body
+        { new: true, runValidators: true }
+      );
+
+      if (!user) {
+        return res.status(404).json({ message: 'No user with that ID' });
+      }
+
+      return res.json({ message: 'User updated successfully!', user });
+    } catch (err) {
+      return res.status(500).json(err);
+    }
+  };
+
   // Add a friend to a user's friend list
   export const addFriend = async (req: Request, res: Response) => {
     try {

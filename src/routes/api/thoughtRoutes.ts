@@ -1,21 +1,16 @@
 import { Router } from 'express';
-const router = Router();
 import thoughtController from '../../controllers/thoughtController.js';
 
+const router = Router();
+const { getThoughts, getThoughtById, createThought, addReaction, updateThought } = thoughtController;
 
-// Routes
+// Get all thoughts or create a new thought
+router.route('/').get(getThoughts).post(createThought);
 
-// Get all thoughts, Create a new thought
-router.route('/')
-  .get(thoughtController.getThoughts)     
-  .post(thoughtController.createThought); 
-
-// Get a thought by ID
-router.route('/:thoughtId')
-  .get(thoughtController.getThoughtById); 
+// Get, update, or delete a single thought by ID
+router.route('/:thoughtId').get(getThoughtById).put(updateThought);
 
 // Add a reaction to a thought
-router.route('/:thoughtId/reaction')
-  .post(thoughtController.addReaction); 
+router.route('/:thoughtId/reactions').post(addReaction);
 
 export default router;
