@@ -4,7 +4,7 @@
 ![License](https://img.shields.io/badge/license-MIT-blue.svg)
 
 ## Video Walkthrough
-** LINK VIDEO HERE **
+https://drive.google.com/file/d/1BUcHCmhO6Hxwrsp2YHyiQN0Pv1kr8nur/view
 
 ## Table of Contents
 - [Description](#description)
@@ -21,7 +21,7 @@ This application supplies API routes for users, there thoughts and reactions to 
 Clone repo to local system. 
 1. npm i 
 2. npm run build 
-3. npm run start u
+3. npm run start
 4. Use insomnia for testing CRUD commands. Follow routes in API folder
 
 ## Usage
