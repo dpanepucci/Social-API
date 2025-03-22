@@ -10,7 +10,7 @@ interface Response {
     status: (code: number) => Response;
     json: (data: any) => void;
 }
-
+// get all Thoughts
 const getThoughts = async (_req: Request, res: Response): Promise<void> => {
     try {
         const thoughts = await Thought.find();
@@ -25,7 +25,7 @@ interface GetThoughtByIdRequest extends Request {
         thoughtId: string;
     };
 }
-
+// get Thoughts by request
 const getThoughtById = async (req: GetThoughtByIdRequest, res: Response): Promise<void> => {
   try {
     const thought = await Thought.findById(req.params.thoughtId);
@@ -42,7 +42,7 @@ interface CreateThoughtRequest extends Request {
         username: string;
     };
 }
-
+// create a Thought
 const createThought = async (req: CreateThoughtRequest, res: Response): Promise<void> => {
   try {
     const newThought = await Thought.create(req.body);
@@ -61,7 +61,7 @@ interface AddReactionRequest extends Request {
         username: string;
     };
 }
-
+// add Reaction to thought
 const addReaction = async (req: AddReactionRequest, res: Response): Promise<void> => {
   try {
     const thought = await Thought.findByIdAndUpdate(
@@ -76,6 +76,7 @@ const addReaction = async (req: AddReactionRequest, res: Response): Promise<void
   }
 };
 
+// exporting all thought controllers
 const thoughtController = { getThoughts, getThoughtById, createThought, addReaction };
 export default thoughtController;
 
