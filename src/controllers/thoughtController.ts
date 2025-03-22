@@ -105,7 +105,33 @@ const updateThought = async (req: UpdateThoughtRequest, res: Response): Promise<
   }
 };
 
+interface DeleteReactionRequest extends Request {
+  params: {
+    thoughtId: string;
+    reactionId: string;
+  };
+}
+
+// Delete a reaction from a thought
+const deleteReaction = async (req: DeleteReactionRequest, res: Response): Promise<void> => {
+  try {
+    const thought = await Thought.findByIdAndUpdate(
+      req.params.thoughtId,
+      { $pull: { reactions: { reactionId: req.params.reactionId } } }, // Remove the reaction with the specified reactionId
+      { new: true } 
+    );
+
+    if (!thought) {
+      return res.status(404).json({ message: 'Thought not found' });
+    }
+
+    res.json({ message: 'Reaction deleted successfully!', thought });
+  } catch (err: any) {
+    res.status(500).json({ error: err.message });
+  }
+};
+
 // exporting all thought controllers
-const thoughtController = { getThoughts, getThoughtById, createThought, addReaction, updateThought };
+const thoughtController = { getThoughts, getThoughtById, createThought, addReaction, updateThought, deleteReaction };
 export default thoughtController;
 
